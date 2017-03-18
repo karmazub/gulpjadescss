@@ -1,0 +1,35 @@
+// Variables
+
+$small: 576px;
+$medium: 768px;
+$large: 992px;
+$xlarge: 1200px;
+
+// Mixin
+
+@mixin respond-to($media) {
+  @if $media == xs {
+    @media only screen and (max-width: $small - 1) { @content; }
+  }
+  @else if $media == sm {
+    @media only screen and (max-width: $medium - 1) { @content; }
+  }
+  @else if $media == md {
+    @media only screen and (max-width: $large - 1) { @content; }
+	}
+  @else if $media == lg {
+    @media only screen and (max-width: $xlarge - 1) { @content; }
+  }
+  @if $media == xl {
+    @media only screen and (min-width: $xlarge) { @content; }
+	}
+}
+
+// .block {
+//   float: left;
+//   width: 250px;
+//   @include respond-to(xs) { width: 100% ;}
+//   @include respond-to(sm) { width: 125px; }
+//   @include respond-to(md) { float: none; }
+//   @include respond-to(lg) { float: none; }
+// }​
