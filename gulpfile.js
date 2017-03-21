@@ -8,6 +8,7 @@ var gulp =         require('gulp'),
 		imagemin =     require('gulp-imagemin'),
 		webserver =    require('gulp-webserver'),
 		rename =       require("gulp-rename"),
+		notify =       require("gulp-notify"),
 		cleanCSS =     require('gulp-clean-css');
 
 
@@ -34,6 +35,7 @@ gulp.task('jade', function () {
 		}))
 		.pipe(plumber())
 		.pipe(gulp.dest(distributionDir + 'pages'))
+		.pipe(notify('Jade done!'));
 });
 
 gulp.task('sass', function () {
@@ -52,7 +54,8 @@ gulp.task('sass', function () {
 			suffix: ".min",
 			extname: ".css"
 		}))
-		.pipe(gulp.dest(distributionDir + 'css'));
+		.pipe(gulp.dest(distributionDir + 'css'))
+		.pipe(notify('Scss done!'));
 });
 
 gulp.task('imagemin', function () {
