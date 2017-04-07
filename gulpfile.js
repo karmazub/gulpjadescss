@@ -9,12 +9,25 @@ var gulp =         require('gulp'),
 		webserver =    require('gulp-webserver'),
 		rename =       require("gulp-rename"),
 		notify =       require("gulp-notify"),
-		cleanCSS =     require('gulp-clean-css');
+		cleanCSS =     require('gulp-clean-css'),
+		uncss =        require('gulp-uncss'),
+		uglify =       require('gulp-uglify'),
+		pump =         require('pump');
 
 
 
 var sourceDir = './src/',
 		distributionDir = './build/';
+
+gulp.task('compress', function (cb) {
+  pump([
+        gulp.src(sourceDir + 'js/**/*.js'),
+        uglify(),
+        gulp.dest(distributionDir + 'js')
+    ],
+    cb
+  );
+});
 
 gulp.task('webserver', function () {
 	gulp.src('./')
@@ -67,6 +80,16 @@ gulp.task('imagemin', function () {
 gulp.task('watch', function () {
 	gulp.watch(sourceDir + 'jade/**/*.jade', ['jade'])
 	gulp.watch(sourceDir + 'scss/**/*.scss', ['sass'])
+	gulp.watch(sourceDir + 'js/**/*.js', ['compress'])
 });
 
-gulp.task('default', ['imagemin', 'sass', 'jade', 'watch', 'webserver']);
+gulp.task('uncss', function () {
+    return gulp.src('site.css') //куда смотреть
+        .pipe(uncss({
+            html: ['index.html', 'posts/**/*.html', 'http://example.com'] //с чем сравниавть
+        }))
+        .pipe(gulp.dest('./out')); //куда выдавать почисченный файл
+});
+
+
+gulp.task('default', ['imagemin', 'sass', 'jade', 'watch', 'compress', 'webserver']);
